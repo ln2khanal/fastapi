@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic
+jinja2
+pandas
+python-multipart
+openpyxl
+python-magic
+sqlalchemy
+databases
+asyncpg
+pytest
+httpx
