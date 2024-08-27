@@ -10,6 +10,7 @@ from app.routers import sourcedata_router, analytics_router, crud_router
 async def setup(app: FastAPI):
     await init_db()
     yield
+    # teardown
 
 
 app = FastAPI(lifespan=setup)

@@ -23,8 +23,10 @@
 8. **Upload your data**
    Using `/api/v1/datasource/add` api, upload your data. You can upload sample data included in this repo @ `sampledata.xlsx`.
 
-# Potential tasks in the backlog:
+9. **Run the testcases: Pytest**
+   To test the APIs, create a `.env.test` file with respective environment variables. Please copy `.env.sample` and make modifications. Then run `make test` command to run the test cases. The test results will be available in a file `test_results.log` in the current location.
 
-1. **TestCase addition**
-2. **Authorization Token implementation**
-3. **File data structure validation**
+# Tasks in the backlog:
+
+1. **Authorization Token implementation**
+

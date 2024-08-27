@@ -11,3 +11,4 @@ databases
 asyncpg
 pytest
 httpx
+python-dotenv
