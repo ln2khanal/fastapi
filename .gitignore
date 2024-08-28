@@ -1,3 +1,5 @@
 *pycache*
 .venv
 .env
+test_results.log
+.DS_Store

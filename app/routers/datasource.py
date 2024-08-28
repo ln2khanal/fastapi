@@ -1,10 +1,11 @@
 import logging
 import pandas as pd
-
 from io import BytesIO
 from app.lib.utils import get_db
-from sqlalchemy.orm import Session
+
+# from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, UploadFile, File, Depends
 from app.lib.operations import get_product_by_id, create_product, update_sales
 
@@ -16,7 +17,9 @@ router = APIRouter(prefix="/api/v1/datasource")
 @router.post(
     "/add", description="Accepts .xlsx file and imports data into the database."
 )
-async def add_source(datafile: UploadFile = File(...), db: Session = Depends(get_db)):
+async def add_source(
+    datafile: UploadFile = File(...), db: AsyncSession = Depends(get_db)
+):
 
     product_fields = {"Product Name", "Product ID", "Family", "Price"}
 

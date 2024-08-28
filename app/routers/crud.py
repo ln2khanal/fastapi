@@ -2,7 +2,6 @@ from typing import Optional
 from datetime import datetime
 from app.models import Product
 from app.lib.utils import get_db
-from sqlalchemy.orm import Session
 from app.lib.operations import (
     get_families,
     get_products,
@@ -10,20 +9,15 @@ from app.lib.operations import (
     update_existing_product,
     assign_family_to_product,
 )
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, Query
 
 router = APIRouter(prefix="/api/v1/crud")
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from typing import Optional
-
-router = APIRouter()
-
 
 @router.patch("/product/{product_id}", description="Updates a product")
 async def update_product(
-    product_id: int, product: Product, db: Session = Depends(get_db)
+    product_id: int, product: Product, db: AsyncSession = Depends(get_db)
 ):
     _product = await update_existing_product(
         db=db, product_id=product_id, product=product
@@ -33,7 +27,7 @@ async def update_product(
 
 @router.post("/family", description="Adds a product to a family")
 async def assign_product_a_family(
-    product_id: int, family_id: int, db: Session = Depends(get_db)
+    product_id: int, family_id: int, db: AsyncSession = Depends(get_db)
 ):
     product = await assign_family_to_product(
         db=db, product_id=product_id, family_id=family_id
@@ -57,7 +51,7 @@ async def list_product(
         title="Family Id",
         description="Provide family id to get the associated product details",
     ),
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
 ):
 
     return {
@@ -74,7 +68,7 @@ async def list_product_family(
         title="Product Id",
         description="Provide product category id to get the family of the product",
     ),
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
 ):
     return {"data": await get_families(product_id=product_id, db=db)}
 
@@ -98,9 +92,9 @@ async def get_product_sales(
         None,
         title="Target Year",
         description="Provide year of which you want to get the sales",
-        example=datetime.now().year,
+        examples=[datetime.now().year],
     ),
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
 ):
     if year is None:
         year = datetime.now().year

@@ -1,12 +1,12 @@
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict
 
 from .products import Product
 
-class Sales(BaseModel):
-    date: datetime
-    sales: int = Field(gt=0)
-    item: Product
 
-    class Config:
-        orm_mode = True
+class Sales(BaseModel):
+    model_config = ConfigDict(from_attributes=True, extra="ignore")
+
+    date: datetime
+    sales: int
+    item: Product

@@ -18,7 +18,7 @@ app = FastAPI(lifespan=setup)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
-@app.get("/", tags=["Landing Page"])
+@app.get("/api/v1", tags=["Landing Page"])
 async def index(request: Request):
     return prepare_template_response(request=request)
 

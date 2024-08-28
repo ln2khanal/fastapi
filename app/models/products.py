@@ -1,19 +1,17 @@
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class Family(BaseModel):
-    name: str
+    model_config = ConfigDict(from_attributes=True, extra="ignore")
 
-    class Config:
-        orm_mode = True
+    name: str
 
 
 class Product(BaseModel):
+    model_config = ConfigDict(from_attributes=True, extra="ignore")
+
     name: Optional[str] = None
     family: Optional["Family"] = None
     product_id: Optional[int] = None
     price: Optional[float] = None
-
-    class Config:
-        orm_mode = True

@@ -146,5 +146,5 @@ async def update_sales(db: Session, product_id: int, sales_data: dict):
             existing_sales.value = value
         else:
             new_sales = Sales(product_id=product_id, date=year_month, value=value)
-            db.add(new_sales)
+            await db.add(new_sales)
     await db.commit()

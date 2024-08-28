@@ -12,3 +12,4 @@ asyncpg
 pytest
 httpx
 python-dotenv
+pytest-asyncio
