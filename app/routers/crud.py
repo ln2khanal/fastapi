@@ -96,6 +96,7 @@ async def get_product_sales(
     ),
     db: AsyncSession = Depends(get_db),
 ):
+    # return {"data": [123]}
     if year is None:
         year = datetime.now().year
 

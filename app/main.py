@@ -1,5 +1,5 @@
-from app.lib.init_db import init_db
 from fastapi import FastAPI, Request
+from app.lib.database import engine, Base
 from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
 from app.lib.response import prepare_template_response
@@ -7,18 +7,20 @@ from app.routers import sourcedata_router, analytics_router, crud_router
 
 
 @asynccontextmanager
-async def setup(app: FastAPI):
-    await init_db()
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     yield
-    # teardown
+    await engine.dispose()
 
 
-app = FastAPI(lifespan=setup)
+app = FastAPI(lifespan=lifespan)
+
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
-@app.get("/api/v1", tags=["Landing Page"])
+@app.get("/", tags=["Landing Page"])
 async def index(request: Request):
     return prepare_template_response(request=request)
 

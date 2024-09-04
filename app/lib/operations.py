@@ -2,10 +2,10 @@ import logging
 from sqlalchemy import func
 from datetime import datetime
 from fastapi import HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.models import Product as ModelProduct
 from app.schemas import Family, Product, Sales
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def update_existing_product(
@@ -66,10 +66,9 @@ async def get_products(product_id: int, family_id: int, db: AsyncSession):
     else:
         query = select(Product)
 
-    async with db.begin():
-        result = await db.execute(query)
+    result = await db.execute(query)
 
-        return result.scalars().all()
+    return result.scalars().all()
 
 
 async def get_sales(
@@ -98,8 +97,8 @@ async def get_sales(
             .filter(Sales.date >= year_start, Sales.date < year_end)
         )
 
-    async with db.begin():
-        result = await db.execute(query)
+    result = await db.execute(statement=query)
+
     return result.scalars().all()
 
 

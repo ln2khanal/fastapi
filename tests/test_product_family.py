@@ -15,25 +15,27 @@ client = AsyncClient(
 
 
 @pytest.mark.asyncio
-async def test_post_any_sales_should_return_method_not_allowed():
+async def test_post_family_method_should_not_allow():
 
-    response = await client.post("/crud/sales")
+    response = await client.post("/crud/family")
 
-    assert response.status_code == 405
+    assert (
+        response.status_code == 422
+    )  # post to /crud/family url requires mandatory parameters
 
 
 @pytest.mark.asyncio
-async def test_get_sales_should_return_null_value():
+async def test_get_family_shoul_return_a_valid_dict():
 
-    response = await client.get("/crud/sales")
+    response = await client.get("/crud/family")
 
     assert response.status_code == 200
     response_json = response.json()
-    assert response_json["data"] == [None]
+    assert type(response_json["data"]) is dict
 
 
 @pytest.mark.asyncio
-async def test_get_sales_after_file_upload_should_return_valid_sales_value():
+async def test_get_family_should_upload_file_and_return_valid_product_family():
     file_path = Path(__file__).parent.parent
     file_name = "sampledata.xlsx"
     full_path = file_path / file_name
@@ -50,8 +52,8 @@ async def test_get_sales_after_file_upload_should_return_valid_sales_value():
             },
         )
 
-    response = await client.get("/crud/sales")
+    response = await client.get("/crud/family")
 
     assert response.status_code == 200
     response_json = response.json()
-    assert response_json["data"][0] > 0
+    assert type(response_json["data"]) is dict

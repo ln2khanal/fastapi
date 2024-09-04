@@ -8,9 +8,7 @@ def pytest_configure():
     load_dotenv()
 
 
-client = AsyncClient(
-    transport=ASGITransport(app=app), base_url="http://webserver/api/v1"
-)
+client = AsyncClient(transport=ASGITransport(app=app), base_url="http://webserver")
 
 
 @pytest.mark.asyncio
